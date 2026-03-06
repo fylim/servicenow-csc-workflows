@@ -1,4 +1,5 @@
 name: Delete Virtual Machine
+run-name: "CSC-${{ github.event.inputs.deploymentID }}"
 
 on:
   workflow_dispatch:
@@ -8,7 +9,7 @@ on:
         required: true
         type: string
       vm_name:
-        description: VM name to delete
+        description: Name of VM to decommission
         required: true
         type: string
 
@@ -22,16 +23,14 @@ jobs:
           echo "Deployment ID: ${{ github.event.inputs.deploymentID }}"
           echo "VM Name: ${{ github.event.inputs.vm_name }}"
 
-      - name: Remove VM
+      - name: Delete VM
         run: |
-          echo "Stopping ${{ github.event.inputs.vm_name }}..."
-          sleep 3
-          echo "Deallocating resources..."
-          sleep 2
-          echo "Deleting VM disk and NIC..."
-          echo "VM ${{ github.event.inputs.vm_name }} deleted."
+          echo "Locating resource by deploymentID=${{ github.event.inputs.deploymentID }}"
+          echo "Deleting VM: ${{ github.event.inputs.vm_name }}"
+          sleep 5
+          echo "VM and associated resources deleted."
 
-      - name: Cleanup resource group
+      - name: Cleanup networking
         run: |
-          echo "Checking rg-csc-${{ github.event.inputs.deploymentID }} for orphaned resources..."
-          echo "Resource group clean."
+          echo "Removing NSG and NIC for ${{ github.event.inputs.vm_name }}"
+          echo "Cleanup complete."
