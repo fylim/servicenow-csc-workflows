@@ -1,4 +1,5 @@
 name: Create Virtual Machine
+run-name: "CSC-${{ github.event.inputs.deploymentID }}"
 
 on:
   workflow_dispatch:
@@ -40,6 +41,8 @@ jobs:
           echo "Creating resource group rg-csc-${{ github.event.inputs.deploymentID }}"
           echo "Deploying ${{ github.event.inputs.vm_size }} in ${{ github.event.inputs.region }}"
           sleep 5
+          echo "Tagging resources with deploymentID=${{ github.event.inputs.deploymentID }}"
+          echo "vm-name=vm-csc-${{ github.event.inputs.deploymentID }}"
           echo "VM provisioned successfully. IP: 10.0.1.42"
 
       - name: Configure networking
