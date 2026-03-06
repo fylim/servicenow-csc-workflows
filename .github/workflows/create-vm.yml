@@ -1,0 +1,49 @@
+name: Create Virtual Machine
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploymentID:
+        description: ServiceNow Deployment ID
+        required: true
+        type: string
+      vm_size:
+        description: VM size
+        required: true
+        type: choice
+        options:
+          - Standard_B2s
+          - Standard_D4s_v3
+          - Standard_E8s_v5
+      region:
+        description: Azure region
+        required: true
+        type: choice
+        options:
+          - australiaeast
+          - southeastasia
+          - westus2
+
+jobs:
+  provision-vm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate request
+        run: |
+          echo "=== CSC VM Provisioning ==="
+          echo "Deployment ID: ${{ github.event.inputs.deploymentID }}"
+          echo "VM Size: ${{ github.event.inputs.vm_size }}"
+          echo "Region: ${{ github.event.inputs.region }}"
+
+      - name: Provision VM
+        run: |
+          echo "Creating resource group rg-csc-${{ github.event.inputs.deploymentID }}"
+          echo "Deploying ${{ github.event.inputs.vm_size }} in ${{ github.event.inputs.region }}"
+          sleep 5
+          echo "VM provisioned successfully. IP: 10.0.1.42"
+
+      - name: Configure networking
+        run: |
+          echo "NSG: Allow SSH/HTTPS, deny all other inbound"
+          sleep 2
+          echo "Network configured."

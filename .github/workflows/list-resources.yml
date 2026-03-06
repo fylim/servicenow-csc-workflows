@@ -1,0 +1,36 @@
+name: List Cloud Resources
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploymentID:
+        description: ServiceNow Deployment ID
+        required: true
+        type: string
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate request
+        run: |
+          echo "=== CSC Resource Inventory ==="
+          echo "Deployment ID: ${{ github.event.inputs.deploymentID }}"
+
+      - name: List VMs
+        run: |
+          echo "Virtual Machines:"
+          echo "  vm-web-01    Standard_B2s    australiaeast   Running"
+          echo "  vm-app-01    Standard_D4s    australiaeast   Running"
+          echo "  vm-db-01     Standard_E8s    australiaeast   Running"
+
+      - name: List networking
+        run: |
+          echo "Network Resources:"
+          echo "  vnet-prod-01     10.0.0.0/16    australiaeast"
+          echo "  nsg-web-01       3 rules        australiaeast"
+          echo "  pip-web-01       20.53.x.x      australiaeast"
+
+      - name: Summary
+        run: |
+          echo "Total: 3 VMs, 1 VNet, 1 NSG, 1 Public IP"

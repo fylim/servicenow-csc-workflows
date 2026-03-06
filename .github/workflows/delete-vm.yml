@@ -1,0 +1,37 @@
+name: Delete Virtual Machine
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploymentID:
+        description: ServiceNow Deployment ID
+        required: true
+        type: string
+      vm_name:
+        description: VM name to delete
+        required: true
+        type: string
+
+jobs:
+  decommission-vm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate request
+        run: |
+          echo "=== CSC VM Decommission ==="
+          echo "Deployment ID: ${{ github.event.inputs.deploymentID }}"
+          echo "VM Name: ${{ github.event.inputs.vm_name }}"
+
+      - name: Remove VM
+        run: |
+          echo "Stopping ${{ github.event.inputs.vm_name }}..."
+          sleep 3
+          echo "Deallocating resources..."
+          sleep 2
+          echo "Deleting VM disk and NIC..."
+          echo "VM ${{ github.event.inputs.vm_name }} deleted."
+
+      - name: Cleanup resource group
+        run: |
+          echo "Checking rg-csc-${{ github.event.inputs.deploymentID }} for orphaned resources..."
+          echo "Resource group clean."
