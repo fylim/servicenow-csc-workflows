@@ -1,5 +1,5 @@
 name: List Cloud Resources
-run-name: "CSC-${{ github.event.inputs.deploymentID }}"
+run-name: "CSC-${{ inputs.deploymentID }}"
 
 on:
   workflow_dispatch:
